@@ -1,10 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Create Task</h2>
-    <form action="{{ route('tasks.store') }}" method="POST">
+<div class="max-w-xl mx-auto dark:bg-zinc-900 p-8 rounded-xl">
+
+    <form action="{{ route('tasks.store') }}" method="POST" class="space-y-4">
         @csrf
-        <input type="text" name="title" placeholder="Task title" required>
-        <button type="submit">Create Task</button>
+
+        <div>
+            <flux:label for="title" value="Task Title" />
+            <flux:input id="title" name="title" type="text" placeholder="Enter task name" required class="w-full" />
+        </div>
+
+        <div>
+            <flux:button type="submit" class="w-full">
+                Create Task
+            </flux:button>
+        </div>
     </form>
+</div>
 @endsection

@@ -8,6 +8,8 @@ Route::get('/', function () {
     return redirect()->route('tasks.index');
 })->name('home');
 
+Route::post('/tasks/{task}/toggle', [TaskController::class, 'toggle'])->name('tasks.toggle');
+
 Route::resource('tasks', TaskController::class);
 
 Route::view('dashboard', 'dashboard')

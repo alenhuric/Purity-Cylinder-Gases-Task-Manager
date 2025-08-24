@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Task Manager</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    @fluxAppearance
+    @livewireStyles
 </head>
-<body>
-    <div class="container">
-        <h1>Task Manager</h1>
+<body class="min-h-screen bg-white dark:bg-zinc-800 flex">
+    
+    @include('components.sidebar')
+
+    <div class="flex-1 p-6">
+        <h1 class="text-3xl font-bold mb-6 text-center">Task Manager</h1>
         @yield('content')
     </div>
+
+    @fluxScripts
+    @livewireScripts
 </body>
 </html>
