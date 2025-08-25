@@ -8,7 +8,7 @@
 
         <flux:input id="title" name="title" type="text" placeholder="Enter task name" required class="w-full" />
         
-        <flux:textarea id="description" name="description" type="text" placeholder="Enter description" required class="w-full"/>
+        <flux:textarea id="description" name="description" type="text" placeholder="Enter description" class="w-full"/>
 
         <flux:button type="submit" class="w-full">Create Task</flux:button>
     </form>
