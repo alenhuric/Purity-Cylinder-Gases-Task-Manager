@@ -28,12 +28,14 @@ class TaskController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
             'category'    => 'nullable|string|max:100',
+            'due_date'    => 'nullable|date|after:today',
         ]);
 
         Task::create([
             'title'       => $request->title,
             'description' => $request->description,
             'category'    => $request->category,
+            'due_date'    => $request->due_date,
             'completed'   => $request->has('completed') ? 1 : 0,
         ]);
 
@@ -53,6 +55,7 @@ class TaskController extends Controller
             'title'       => ['required','string','max:255'],
             'description' => ['nullable','string'],
             'completed'   => ['sometimes','boolean'],
+            'due_date'    => ['nullable','date'],
             'category'    => ['nullable','string','max:100'],
         ]);
 
@@ -60,6 +63,7 @@ class TaskController extends Controller
         $task->description = $validated['description'] ?? null;
         $task->completed   = $request->boolean('completed');
         $task->category    = $validated['category'] ?? null;
+        $task->due_date    = $validated['due_date'] ?? null;
 
         $task->save();
 

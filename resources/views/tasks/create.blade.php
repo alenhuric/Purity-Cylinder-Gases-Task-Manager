@@ -16,6 +16,16 @@
             <option value="blue" selected>🔵 Blue</option>
         </flux:select>
 
+        <label for="due_date" class="block font-medium text-sm text-gray-700 dark:text-gray-300">Due Date</label>
+        <input 
+            type="date" 
+            id="due_date" 
+            name="due_date" 
+            min="{{ now()->addDay()->toDateString() }}" 
+            class="w-full rounded border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 p-2"
+            placeholder="Select a due date"
+        />
+
         <flux:button type="submit" class="w-full">Create Task</flux:button>
     </form>
 </div>

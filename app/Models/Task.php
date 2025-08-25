@@ -9,8 +9,9 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'completed', 'category'];
+    protected $fillable = ['title', 'description', 'completed', 'category', 'due_date'];
     protected $casts = [
         'completed' => 'boolean',
+        'due_date' => 'date',
     ];
 }

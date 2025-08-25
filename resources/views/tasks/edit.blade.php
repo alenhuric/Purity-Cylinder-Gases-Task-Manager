@@ -26,6 +26,17 @@
                 <option value="blue" {{ $task->category === 'blue' ? 'selected' : '' }}>🔵 Blue</option>
             </flux:select>
 
+            <label for="due_date" class="block font-medium text-sm text-gray-700 dark:text-gray-300">Due Date</label>
+            <input 
+                type="date" 
+                id="due_date" 
+                name="due_date" 
+                value="{{ old('due_date', $task->due_date?->format('Y-m-d')) }}" 
+                min="{{ now()->addDay()->toDateString() }}" 
+                class="w-full rounded border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 p-2"
+            />
+
+
             <label class="flex items-center space-x-2">
                 <input type="checkbox" name="completed" value="1" {{ $task->completed ? 'checked' : '' }}>
                 <span>Completed</span>
