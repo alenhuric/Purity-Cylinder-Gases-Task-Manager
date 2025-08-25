@@ -17,7 +17,7 @@ class TaskController extends Controller
 
     public function create()
     {
-        $taskCount = Task::count();
+        $taskCount = Task::where('completed', 0)->count();
 
         return view('tasks.create', compact('taskCount'));
     }
@@ -25,14 +25,16 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category'    => 'nullable|string|max:100',
         ]);
 
         Task::create([
-            'title' => $request->title,
+            'title'       => $request->title,
             'description' => $request->description,
-            'completed' => $request->has('completed') ? 1 : 0,
+            'category'    => $request->category,
+            'completed'   => $request->has('completed') ? 1 : 0,
         ]);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
@@ -51,15 +53,29 @@ class TaskController extends Controller
             'title'       => ['required','string','max:255'],
             'description' => ['nullable','string'],
             'completed'   => ['sometimes','boolean'],
+            'category'    => ['nullable','string','max:100'],
         ]);
 
-        $task->title = $validated['title'];
+        $task->title       = $validated['title'];
         $task->description = $validated['description'] ?? null;
-        $task->completed = $request->boolean('completed');
+        $task->completed   = $request->boolean('completed');
+        $task->category    = $validated['category'] ?? null;
 
         $task->save();
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');;
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
+    }
+
+    public function updateCategory(Request $request, Task $task)
+    {
+        $validated = $request->validate([
+            'category' => 'required|in:blue,yellow,red',
+        ]);
+    
+        $task->category = $validated['category'];
+        $task->save();
+    
+        return response()->json(['success' => true, 'category' => $task->category]);
     }
 
     public function destroy(Task $task)
@@ -79,4 +95,3 @@ class TaskController extends Controller
         return response()->json(['completed' => $task->completed]);
     }
 }
-

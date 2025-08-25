@@ -6,9 +6,15 @@
     <form action="{{ route('tasks.store') }}" method="POST" class="space-y-4">
         @csrf
 
-        <flux:input id="title" name="title" type="text" placeholder="Enter task name" required class="w-full" />
+        <flux:input id="title" name="title" type="text" placeholder="Enter task name" required class="w-full" maxlength="60" label="Task Title"  />
         
-        <flux:textarea id="description" name="description" type="text" placeholder="Enter description" class="w-full"/>
+        <flux:textarea id="description" name="description" type="text" placeholder="Enter description" class="w-full" maxlength="120" label="Task Description"/>
+
+        <flux:select id="category" name="category" label="Task Category" class="w-full">
+            <option value="red">🔴 Red</option>
+            <option value="yellow">🟡 Yellow</option>
+            <option value="blue" selected>🔵 Blue</option>
+        </flux:select>
 
         <flux:button type="submit" class="w-full">Create Task</flux:button>
     </form>

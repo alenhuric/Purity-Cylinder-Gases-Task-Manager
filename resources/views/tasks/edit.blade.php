@@ -13,11 +13,18 @@
                 label="Task Title" 
                 value="{{ $task->title }}" 
                 required
+                maxlength="60"
             />
 
-            <flux:textarea id="description" name="description" placeholder="Enter description" class="w-full">
+            <flux:textarea id="description" name="description" placeholder="Enter description" class="w-full" maxlength="120" label="Task Description" >
                 {{ old('description', $task->description) }}
             </flux:textarea>
+
+            <flux:select id="category" name="category" label="Task Category" class="w-full">
+                <option value="red" {{ $task->category === 'red' ? 'selected' : '' }}>🔴 Red</option>
+                <option value="yellow" {{ $task->category === 'yellow' ? 'selected' : '' }}>🟡 Yellow</option>
+                <option value="blue" {{ $task->category === 'blue' ? 'selected' : '' }}>🔵 Blue</option>
+            </flux:select>
 
             <label class="flex items-center space-x-2">
                 <input type="checkbox" name="completed" value="1" {{ $task->completed ? 'checked' : '' }}>

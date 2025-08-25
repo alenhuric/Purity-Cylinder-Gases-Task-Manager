@@ -9,6 +9,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::post('/tasks/{task}/toggle', [TaskController::class, 'toggle'])->name('tasks.toggle');
+Route::post('/tasks/{task}/category', [TaskController::class, 'updateCategory'])->name('tasks.updateCategory');
 
 Route::resource('tasks', TaskController::class);
 

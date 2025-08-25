@@ -20,8 +20,10 @@
         <li x-data="{ completed: @json($task->completed) }" x-effect="
             if (completed) { $el.parentNode.appendChild($el) } else { $el.parentNode.prepend($el) }
         ">
-            <div class="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow hover:shadow-lg transition-all duration-200 flex items-start space-x-4">
-                
+        <div class="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow hover:shadow-lg transition-all duration-200 flex items-start space-x-4 
+            @if($task->category === 'red') border-l-4 border-red-500
+            @elseif($task->category === 'yellow') border-l-4 border-yellow-400
+            @else border-l-4 border-blue-500 @endif">
                 <label class="flex-shrink-0 mt-1 cursor-pointer">
                     <div class="relative inline-block w-12 h-7">
                         <input type="checkbox" x-model="completed" class="sr-only peer"
@@ -51,14 +53,47 @@
                     <flux:dropdown>
                         <flux:button icon:trailing="chevron-down"></flux:button>
                         <flux:menu>
-                            <flux:menu.item href="{{ route('tasks.edit', $task) }}" icon="pencil-square">Edit</flux:menu.item>
-                            <flux:menu.separator />
-                            <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline-flex">
-                                @csrf
-                                @method('DELETE')
-                                <flux:menu.item type="submit" icon="trash">Delete</flux:menu.item>
-                            </form>
-                        </flux:menu>
+                        <flux:menu.submenu heading="Task Category">
+                            @foreach(['blue','yellow','red'] as $cat)
+                                <div class="px-2">
+                                    <button
+                                        type="button"
+                                        class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-zinc-700"
+                                        data-category="{{ $cat }}"
+                                        @click="
+                                            fetch('{{ route('tasks.updateCategory', $task) }}', {
+                                                method: 'POST',
+                                                headers: { 
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({ category: '{{ $cat }}' })
+                                            })
+                                            .then(r => r.json())
+                                            .then(d => {
+                                                if(d.success){
+                                                    // Update the border color
+                                                    let parentDiv = $el.closest('li').querySelector('div.rounded-xl');
+                                                    parentDiv.classList.remove('border-blue-500','border-red-500','border-yellow-400');
+                                                    parentDiv.classList.add('border-{{ $cat }}-500');
+                                                }
+                                            })
+                                        "
+                                    >
+                                        {{ ucfirst($cat) }}
+                                    </button>
+                                </div>
+                            @endforeach
+                        </flux:menu.submenu>
+                        <flux:menu.separator />
+                        <flux:menu.item href="{{ route('tasks.edit', $task) }}" icon="pencil-square">Edit</flux:menu.item>
+                        <flux:menu.separator />
+                        <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline-flex">
+                            @csrf
+                            @method('DELETE')
+                            <flux:menu.item type="submit" icon="trash">Delete</flux:menu.item>
+                        </form>
+                    </flux:menu>
                     </flux:dropdown>
                 </div>
             </div>
