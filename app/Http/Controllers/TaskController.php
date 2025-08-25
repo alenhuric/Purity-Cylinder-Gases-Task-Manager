@@ -10,12 +10,16 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        return view('tasks.index', compact('tasks'));
+        $taskCount = $tasks->count();
+
+        return view('tasks.index', compact('tasks', 'taskCount'));
     }
 
     public function create()
     {
-        return view('tasks.create');
+        $taskCount = Task::count();
+        
+        return view('tasks.create', compact('taskCount'));
     }
 
     public function store(Request $request)
@@ -40,21 +44,35 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task'));
     }
 
+    // public function update(Request $request, Task $task)
+    // {
+    //     $validated = $request->validate([
+    //         'title'     => ['required','string','max:255'],
+    //         'completed' => ['sometimes','boolean'],
+    //     ]);
+
+    //     $task->completed = $request->boolean('completed');
+    //     $task->title = $validated['title'];
+    //     $task->save();
+
+    //     return redirect()->route('tasks.index');
+    // }
     public function update(Request $request, Task $task)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+{
+    $validated = $request->validate([
+        'title'       => ['required','string','max:255'],
+        'description' => ['nullable','string'],
+        'completed'   => ['sometimes','boolean'],
+    ]);
 
-        $task->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'completed' => $request->has('completed') ? 1 : 0,
-        ]);
+    $task->title = $validated['title'];
+    $task->description = $validated['description'] ?? $task->description;
+    $task->completed = $request->boolean('completed');
+    
+    $task->save();
 
-        return redirect()->route('tasks.index');
-    }
+    return redirect()->route('tasks.index');
+}
 
     public function destroy(Task $task)
     {
@@ -62,10 +80,14 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    public function toggle(Task $task)
+    public function toggle(Request $request, Task $task)
     {
-        $task->completed = !$task->completed;
-        $task->save();
+        $validated = $request->validate([
+            'completed' => 'required|boolean',
+        ]);
+
+        $task->update(['completed' => $request->boolean('completed')]);
+
         return response()->json(['completed' => $task->completed]);
     }
 }

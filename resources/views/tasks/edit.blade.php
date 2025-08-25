@@ -15,6 +15,10 @@
                 required
             />
 
+            <flux:textarea id="description" name="description" placeholder="Enter description" class="w-full">
+                {{ old('description', $task->description) }}
+            </flux:textarea>
+
             <label class="flex items-center space-x-2">
                 <input type="checkbox" name="completed" value="1" {{ $task->completed ? 'checked' : '' }}>
                 <span>Completed</span>
