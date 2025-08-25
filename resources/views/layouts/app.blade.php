@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Task Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ asset('PurityCylinderGases.png') }}" type="image/png">
     @fluxAppearance
     @livewireStyles
 </head>
