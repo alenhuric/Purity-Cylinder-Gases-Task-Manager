@@ -5,7 +5,6 @@
     <flux:navlist variant="outline">
         <flux:navlist.item icon="home" badge="{{ $taskCount }}"  href="{{ route('tasks.index') }}" current>My Tasks</flux:navlist.item>
         <flux:navlist.item icon="inbox" href="{{ route('tasks.create') }}">Add Task</flux:navlist.item>
-        <!-- <flux:navlist.item icon="document-text" href="#">Documentation</flux:navlist.item> -->
         <flux:navlist.item icon="document-text" href="{{ route('documentation') }}">Documentation</flux:navlist.item>
         <flux:navlist.item icon="calendar" href="#">Calendar</flux:navlist.item>
     </flux:navlist>
